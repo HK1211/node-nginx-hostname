@@ -9,6 +9,6 @@ services:
 
   node-app:
     build: .
-    image: leehankue/nginx-hostname:tagname
+    image: leehankue/nginx-hostname:latest
     env_file:
       - ./.env
