@@ -2,7 +2,7 @@ const express = require("express");
 
 const app = express();
 
-const port = process.env.NODE_ENV || 80;
+const port = process.env.NODE_ENV || 8080;
 
 const os = require("os");
 
