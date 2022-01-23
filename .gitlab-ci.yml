@@ -26,7 +26,7 @@ build:
     # - docker login -u 도커허브ID -p 비밀번호
     # - docker login -u leehankue -p 75951535ty!@
     # - docker image push leehankue/nginx-hostname
-    # - docker-compose -f docker-compose.yml -f docker-compose.prod.yml push --with-registry-auth
+    - docker-compose -f docker-compose.yml -f docker-compose.prod.yml push --with-registry-auth
     - docker images
   only:
     - main
