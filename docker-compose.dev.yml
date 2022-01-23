@@ -15,10 +15,10 @@ services:
       - NODE_ENV=development # 프로세스에서 사용할 NODE_ENV를 여기서 설정합니다.
     command: npm run dev
 
-  redis:
-    image: redis
-    volumes:
-      - redis-db:/data
+  # redis:
+  #   image: redis
+  #   volumes:
+  #     - redis-db:/data
   #   entrypoint: redis-server --appendonly yes #  AOF방식으로 데이터를 저장하겠다는 의미
 
 volumes:

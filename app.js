@@ -10,6 +10,10 @@ app.get("/", (req, res) => {
   res.send(`<h2>Hi There성공</h2><p>${os.hostname()}</p>`);
 });
 
+app.get("/api", (req, res) => {
+  res.send(`<h2>Hi There성공 api</h2><p>${os.hostname()}</p>`);
+});
+
 app.listen(port, () => {
   console.log(`서버 시작${port}`);
 });
