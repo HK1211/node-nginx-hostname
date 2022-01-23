@@ -26,22 +26,17 @@ build:
     # - docker login -u 도커허브ID -p 비밀번호
     - docker-compose -f docker-compose.yml -f docker-compose.prod.yml push
     - docker images
-
   only:
-    - master
+    - main
   tags:
-    - hostname
+    - nginx-hostname
 
 deploy:
   stage: deploy
-  only:
-    - master
-  tags:
-    - hostname
   script:
     - docker stack deploy -c docker-compose.yml -c docker-compose.prod.yml hostname --with-registry-auth
     # - docker service update hostname_web
   only:
-    - master
+    - main
   tags:
-    - hostname
+    - nginx-hostname
