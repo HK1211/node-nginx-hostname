@@ -7,7 +7,7 @@ const port = process.env.NODE_ENV || 8080;
 const os = require("os");
 
 app.get("/", (req, res) => {
-  res.send(`<h2>Hi There성공~4</h2><p>${os.hostname()}</p>`);
+  res.send(`<h2>Hi There성공</h2><p>${os.hostname()}</p>`);
 });
 
 app.get("/api", (req, res) => {
