@@ -24,20 +24,20 @@ build:
     - sudo docker image prune -f
     - docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
     # - docker login -u 도커허브ID -p 비밀번호
-    - docker build -t test-build .
-    # - docker-compose -f docker-compose.yml -f docker-compose.prod.yml push --with-registry-auth
+    - docker-compose -f docker-compose.yml -f docker-compose.prod.yml push --with-registry-auth
     # - docker images
   only:
     - main
   tags:
     - nginx-hostname
-# deploy:
-#   stage: deploy
-#   script:
-#     - docker stack deploy -c docker-compose.yml -c docker-compose.prod.yml hostname --with-registry-auth
-#     # - docker service update hostname_web
 
-#   only:
-#     - main
-#   tags:
-#     - nginx-hostname
+deploy:
+  stage: deploy
+  script:
+    - docker stack deploy -c docker-compose.yml -c docker-compose.prod.yml hostname --with-registry-auth
+    # - docker service update hostname_web
+
+  only:
+    - main
+  tags:
+    - nginx-hostname
