@@ -1,0 +1,58 @@
+version: "3"
+services:
+  nginx:
+    ports:
+      - "80:80"
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - balance
+
+  node-app:
+    ports:
+      - "8080:8080"
+    deploy:
+      replicas: 12
+      resources:
+        limits:
+          cpus: "0.9"
+          memory: 80M
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+        delay: 2s
+      update_config:
+        parallelism: 2
+        delay: 15s
+    networks:
+      - balance
+
+    build: # build를 오버라이드(재정의) 합니다
+      context: .
+      args:
+        NODE_ENV: production # Dockerfile에서 사용할 NODE_ENV를 여기서 설정합니다.
+    # environment:
+    #   - NODE_ENV=production # 프로세스에서 사용할 NODE_ENV를 여기서 설정합니다.
+    #   - JWT_SECRET=${JWT_SECRET}
+    #   - JWT_EXPIRES_SEC=${JWT_EXPIRES_SEC}
+    #   - BCRYPT_SALT_ROUNDS=${BCRYPT_SALT_ROUNDS}
+    #   - HOST_PORT=${HOST_PORT}
+    #   - CORS_ALLOW_ORIGIN=${CORS_ALLOW_ORIGIN}
+    #   - DB_HOST=${DB_HOST}
+    #   - DB_USER=${DB_USER}
+    #   - DB_DATABASE=${DB_DATABASE}
+    #   - DB_PASSWORD=${DB_PASSWORD}
+    #   - REDIS_SECRET=${REDIS_SECRET}
+    #   - MONGO_URI=${MONGO_URI}
+    #   - CSRF_SECRET_KEY=${CSRF_SECRET_KEY}
+    #   - RATELIMIT_WINDOWMS=${RATELIMIT_WINDOWMS}
+    #   - RATELIMIT_MAX_REQUEST=${RATELIMIT_MAX_REQUEST}
+    command: node app.js
+  # redis:
+  #   networks:
+  #     - balance
+
+networks:
+  balance:
+    driver: overlay

@@ -1,0 +1,46 @@
+{
+  "name": "hostname-nginx",
+  "version": "1.0.0",
+  "description": "hostname을 표시하는 간단한 App입니다.",
+  "main": "app.js",
+  "repository": "git@gitlab.com:leehankue/hostname-nginx.git",
+  "author": "HK1211 <hk@ccgolftour.co.kr>",
+  "license": "MIT",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon -L app.js",
+    "docker-build-default": "docker build -t leehankue/hostname-nginx .",
+    "docker-start": "docker run -v %cd%:/app:ro -v /app/node_modules --env-file ./.env -d -p 8080:8080 --name test-app leehankue/hostname-nginx",
+    "docker-stop": "docker rm test-app -fv",
+    "docker-bash": "docker exec -it test-app bash",
+    "docker-up": "docker-compose up -d",
+    "docker-upb": "docker-compose up -d --build",
+    "docker-down": "docker-compose down -v",
+    "docker-updev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d",
+    "docker-updevs": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --scale node-app=2",
+    "docker-updevb": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build -V",
+    "docker-updev-nodeapp": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d --no-deps node-app",
+    "docker-downdev": "docker-compose -f docker-compose.yml -f docker-compose.dev.yml down -v",
+    "docker-upprod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d",
+    "docker-upprodb": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build -V",
+    "docker-downprod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml down -v",
+    "docker-vrm": "docker volume prune",
+    "docker-build-prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml build node-app",
+    "docker-push-prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml push node-app",
+    "docker-pull-prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml pull node-app",
+    "docker-up-prod": "docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d node-app",
+    "docker-watchtower": "docker run -d --name watchtower -e WATCHTOWER_TRACE=true -e WATCHTOWER_DEBUG=true -e WATCHTOWER_POLL_INTERVAL=300 -v /var/run/docker.sock:/var/run/docker.sock containrrr/watchtower app_node-app_1",
+    "docker-deploy": "docker stack deploy -c docker-compose.yml -c docker-compose.prod.yml hostname --with-registry-auth",
+    "docker-node-ls": "docker node ls",
+    "docker-stack-ls": "docker stack ls",
+    "docker-stack-services": "docker stack services hostname",
+    "docker-stack-ps": "docker stack ps hostname"
+  },
+  "dependencies": {
+    "express": "^4.17.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}

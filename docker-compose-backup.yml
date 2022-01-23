@@ -1,0 +1,26 @@
+version: "3"
+services:
+  test-app:
+    build: . # 빌드에 필요한 Dockerfile의 경로
+    ports:
+      - "8080:8080"
+      # - "4000:4000" # 여러개 포트를 오픈할 수 있다
+    volumes:
+      - ./:/app:ro # %cd%같은 command창에서는 필요한 명령없이 현제 디렉토리 경로를 ./ 으로 작성할 수 있다.
+      - /app/node_modules
+    # environment:
+    # - JWT_SECRET=5MT3xPxpeyKEMP2bY9x4JQs2CQb5RgDz
+    # - JWT_EXPIRES_SEC=86400
+    # - BCRYPT_SALT_ROUNDS=10
+    # - HOST_PORT=8080
+    # - CORS_ALLOW_ORIGIN=http://13.125.174.47:8080
+    # - DB_HOST=ccgolftour.cbg2pt6yozra.ap-northeast-2.rds.amazonaws.com
+    # - DB_USER=admin
+    # - DB_DATABASE=ccgolftour
+    # - DB_PASSWORD=angoalf12
+    # - MONGO_URI=mongodb+srv://dwitter:75951535t@cluster0.crrjz.mongodb.net/myFirstDatabase?retryWrites=true&w=majority
+    # - CSRF_SECRET_KEY=j*9x9PV\9a.DmMam
+    # - RATELIMIT_WINDOWMS=60000
+    # - RATELIMIT_MAX_REQUEST=100
+    env_file:
+      - ./.env

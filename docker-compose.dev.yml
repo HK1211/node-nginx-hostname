@@ -1,0 +1,25 @@
+version: "3"
+services:
+  nginx:
+    ports:
+      - "8080:80"
+  node-app:
+    build: # build를 오버라이드(재정의) 합니다
+      context: .
+      args:
+        NODE_ENV: development # Dockerfile에서 사용할 NODE_ENV를 여기서 설정합니다.
+    volumes:
+      - ./:/app:ro # %cd%같은 command창에서는 필요한 명령없이 현제 디렉토리 경로를 ./ 으로 작성할 수 있다.
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development # 프로세스에서 사용할 NODE_ENV를 여기서 설정합니다.
+    command: npm run dev
+
+  redis:
+    image: redis
+    volumes:
+      - redis-db:/data
+  #   entrypoint: redis-server --appendonly yes #  AOF방식으로 데이터를 저장하겠다는 의미
+
+volumes:
+  redis-db:

@@ -1,12 +1,47 @@
-# You can override the included template(s) by including variable overrides
-# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
-# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
-# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
-# Note that environment variables can be set in several places
-# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
+image: docker:latest
+services:
+  - docker:dind
+
 stages:
-- test
-sast:
-  stage: test
-include:
-- template: Security/SAST.gitlab-ci.yml
+  - build
+  - deploy
+
+cache:
+  paths:
+    - node_modules/
+
+build:
+  stage: build
+  before_script:
+    - docker info
+    # - sudo add-apt-repository universe
+    # - sudo add-apt-repository multiverse
+    # - sudo apt-get update
+    # - sudo apt-get upgrade
+  script:
+    - echo setting up env $DYNAMIC_ENV_VAR
+    - docker ps
+    - sudo docker image prune -f
+    - docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
+    # - docker login -u 도커허브ID -p 비밀번호
+    - docker-compose -f docker-compose.yml -f docker-compose.prod.yml push
+    - docker images
+
+  only:
+    - master
+  tags:
+    - hostname
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  tags:
+    - hostname
+  script:
+    - docker stack deploy -c docker-compose.yml -c docker-compose.prod.yml hostname --with-registry-auth
+    # - docker service update hostname_web
+  only:
+    - master
+  tags:
+    - hostname
